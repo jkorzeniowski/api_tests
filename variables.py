@@ -1,2 +1,2 @@
-ENDPOINT = "https://reqres.in/"
+ENDPOINT = "https://reqres.in"
 REQUEST_TIMEOUT_GLOBAL = 5
