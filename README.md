@@ -1,4 +1,4 @@
-##### API tests for https://reqres.in/ website
+##### API tests for https://reqres.in/ API
 
 | Language: python | Framework: pytest |
 
