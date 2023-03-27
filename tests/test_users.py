@@ -49,17 +49,17 @@ def test_get_invalid_user():
     assert not response.json(), "JSON was available in the response but not expected any"
 
 
-def test_create_user():
+def test_create_and_delete_user():
     user_data = {
         "name": "Karim",
         "job": "Scientist"
     }
-    response = requests.post(f"{ENDPOINT}/api/users", json=user_data, timeout=REQUEST_TIMEOUT_GLOBAL)
-    assert response.status_code == 201, f"Something went wrong, actual status code: {response.status_code}\n" \
-                                        f"while expected code: 201"
-    assert response.json(), "No JSON in the response"
+    create_response = requests.post(f"{ENDPOINT}/api/users", json=user_data, timeout=REQUEST_TIMEOUT_GLOBAL)
+    assert create_response.status_code == 201, f"Something went wrong, actual status code: {create_response.status_code}\n" \
+                                               f"while expected code: 201"
+    assert create_response.json(), "No JSON in the response"
 
-    response_data = response.json()
+    response_data = create_response.json()
     assert response_data['name'] == user_data['name'], f"Data in response differs.\n" \
                                                        f"User name in response: {response_data['name']}" \
                                                        f"User name provided: {user_data['name']}"
@@ -69,3 +69,20 @@ def test_create_user():
     assert response_data['id'], "ID for the user not set or not provided in response."
     assert response_data['id'].isnumeric(), f"ID for the user is not integer type: ID: {response_data['id']}"
     assert response_data['createdAt']
+
+    delete_response = requests.delete(f"{ENDPOINT}/api/users/{response_data['id']}", timeout=REQUEST_TIMEOUT_GLOBAL)
+    assert delete_response.status_code == 204, f"Something went wrong, actual status code: " \
+                                               f"{delete_response.status_code}\n" \
+                                               f"while expected code: 204"
+
+
+def test_update_user(user_setup):
+    new_user_data = {
+        "name": "Tom",
+        "job": "Actor"
+    }
+    response = requests.patch(f"{ENDPOINT}/api/users/{user_setup['id']}", json=new_user_data)
+
+    assert response.status_code == 200, f"Something went wrong, actual status code: {response.status_code}\n" \
+                                        f"while expected code: 200"
+    assert response.json() and response.json()["updatedAt"], "Response have no response or response data is invalid"
