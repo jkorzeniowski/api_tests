@@ -55,7 +55,8 @@ def test_create_and_delete_user():
         "job": "Scientist"
     }
     create_response = requests.post(f"{ENDPOINT}/api/users", json=user_data, timeout=REQUEST_TIMEOUT_GLOBAL)
-    assert create_response.status_code == 201, f"Something went wrong, actual status code: {create_response.status_code}\n" \
+    assert create_response.status_code == 201, f"Something went wrong, actual status code: " \
+                                               f"{create_response.status_code}\n" \
                                                f"while expected code: 201"
     assert create_response.json(), "No JSON in the response"
 
@@ -81,7 +82,8 @@ def test_update_user(user_setup):
         "name": "Tom",
         "job": "Actor"
     }
-    response = requests.patch(f"{ENDPOINT}/api/users/{user_setup['id']}", json=new_user_data)
+    response = requests.patch(f"{ENDPOINT}/api/users/{user_setup['id']}", json=new_user_data,
+                              timeout=REQUEST_TIMEOUT_GLOBAL)
 
     assert response.status_code == 200, f"Something went wrong, actual status code: {response.status_code}\n" \
                                         f"while expected code: 200"
