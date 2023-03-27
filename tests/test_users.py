@@ -17,11 +17,9 @@ def test_get_user_data_section():
     assert response.status_code == 200, f"Something went wrong, actual status code: {response.status_code}\n" \
                                         f"while expected code: 200"
     assert response.json(), "No JSON in the response"
-
-    data_dict = response.json()['data']
-    assert data_dict == expected_first_user, "First user data differs. User data updated/changed.\n" \
-                                             f"Expected data: {expected_first_user}\n" \
-                                             f"Actual data: {data_dict}"
+    assert response.json()['data'] == expected_first_user, "First user data differs. User data updated/changed.\n" \
+                                                           f"Expected data: {expected_first_user}\n" \
+                                                           f"Actual data: {response.json()['data']}"
 
 
 def test_get_user_support_section():
@@ -35,10 +33,10 @@ def test_get_user_support_section():
                                         f"while expected code: 200"
     assert response.json(), "No JSON in the response"
 
-    support_section = response.json()['support']
-    assert support_section == expected_support_section, "Help section differs. Help section updated/changed.\n" \
-                                                        f"Expected data: {expected_support_section}\n" \
-                                                        f"Actual data: {support_section}"
+    assert response.json()['support'] == expected_support_section, \
+        "Help section differs. Help section updated/changed.\n" \
+        f"Expected data: {expected_support_section}\n" \
+        f"Actual data: {response.json()['support']}"
 
 
 def test_get_invalid_user():
@@ -69,7 +67,7 @@ def test_create_and_delete_user():
                                                      f"User job provided: {user_data['job']}"
     assert response_data['id'], "ID for the user not set or not provided in response."
     assert response_data['id'].isnumeric(), f"ID for the user is not integer type: ID: {response_data['id']}"
-    assert response_data['createdAt']
+    assert response_data['createdAt'], "Missing 'createdAt' field from the response."
 
     delete_response = requests.delete(f"{ENDPOINT}/api/users/{response_data['id']}", timeout=REQUEST_TIMEOUT_GLOBAL)
     assert delete_response.status_code == 204, f"Something went wrong, actual status code: " \
