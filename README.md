@@ -1,9 +1,9 @@
 ##### API tests for https://reqres.in/ website
 
-* Language: python
-* Framework: pytest
+Language: python
+Framework: pytest
 
-##### How to use
+##### How to run
 Install dependencies using command:
 
 ```pip install -r requirements.txt```
